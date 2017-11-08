@@ -49,11 +49,13 @@ public class MyFrame extends JFrame {
 
         // B3 - Game commands
         pB3.setLayout(new FlowLayout());
-        JButton btnSave = new JButton("Save"), btnLoad = new JButton("Load");
+        JButton btnSave = new JButton("Save"), btnLoad = new JButton("Load"), btnClear = new JButton("Clear");
         btnSave.setFont(new Font("Times New Roman", Font.BOLD, 48));
         btnLoad.setFont(new Font("Times New Roman", Font.BOLD, 48));
+        btnClear.setFont(new Font("Times New Roman", Font.BOLD, 48));
         pB3.add(btnSave);
         pB3.add(btnLoad);
+        pB3.add(btnClear);
 
         // Buttons
         pButtons.setLayout(new GridLayout(3, 1));
