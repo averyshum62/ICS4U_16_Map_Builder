@@ -1,17 +1,31 @@
-import javax.swing.*;
-import java.util.Hashtable;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 public class MyImages {
-    private static Hashtable<String, ImageIcon> img = new Hashtable<>();
+    private static BufferedImage []tile;
+    private static BufferedImage []obj;
+    public static final int WHITE = 0, PINK = 1, BLUE = 2, COIN = 0;
 
     public static void load() {
-        img.put("white", new ImageIcon("res/tile_white.png"));
-        img.put("pink", new ImageIcon("res/tile_pink.png"));
-        img.put("blue", new ImageIcon("res/tile_blue.png"));
-        img.put("coin", new ImageIcon("res/tile_coin.png"));
+    	tile = new BufferedImage[3];
+    	obj = new BufferedImage[1];
+        try {
+        	tile[0] = ImageIO.read(new File("res/tile_white.png"));
+        	tile[1] = ImageIO.read(new File("res/tile_pink.png"));
+        	tile[2] = ImageIO.read(new File("res/tile_blue.png"));
+        	
+        	obj[0] = ImageIO.read(new File("res/tile_coin.png"));
+        }
+        catch(IOException e){}
     }
 
-    public static ImageIcon get(String key) {
-        return img.get(key);
+    public static BufferedImage getTile(int a) {
+    	return tile[a];
     }
+    
+    public static BufferedImage getObj(int a) {
+    	return obj[a];
+    }
+    
 }
