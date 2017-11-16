@@ -17,9 +17,9 @@ import java.util.ArrayList;
 public class MapBuilder extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
 
     private JPanel pGrid, pGridWrapper, pButtons, pTiles, pEntities, pCommands;
-    private JButton bPink, bBlue;   // Tiles
+    private JButton bWall1, bWall2;   // Tiles
     private JButton bExit, bPortalBlue, bPortalOrange, bPlayer, bCoin, bBag, bMonster, bSword; // Entities
-    private JButton bSave, bLoad, bClear;    // Game commands
+    private JButton bSave, bClear;    // Game commands
     private ArrayList<JButton> grid;
     private ImageIcon iconToSet;
     private boolean drag;
@@ -35,7 +35,7 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
         Container cont = getContentPane();
 
         // Set white icon as default
-        iconToSet = MyImages.get("white");
+        iconToSet = GImages.getImageIcon(GImages.WHITE);
 
         /* Initialise JPanels */
         pGrid = new JPanel();
@@ -84,51 +84,53 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
         /* Tiles - background images */
         pTiles.setLayout(new FlowLayout());
 
-        bPink = new JButton("Pink", MyImages.get("pink"));
-        bPink.setFont(new Font("Arial", Font.BOLD, 32));
-        bPink.setBackground(Color.WHITE);
-        bPink.addActionListener(this);
-        bPink.setActionCommand("ADD_pink");
-        pTiles.add(bPink);
+        bWall1 = new JButton("Wall 1", GImages.getImageIcon(GImages.WALL_1));
+        bWall1.setFont(new Font("Arial", Font.BOLD, 32));
+        bWall1.setBackground(Color.WHITE);
+        bWall1.addActionListener(this);
+        bWall1.setActionCommand("ADD_" + GImages.WALL_1);
+        pTiles.add(bWall1);
 
-        bBlue = new JButton("Blue", MyImages.get("blue"));
-        bBlue.setFont(new Font("Arial", Font.BOLD, 32));
-        bBlue.setBackground(Color.WHITE);
-        bBlue.addActionListener(this);
-        bBlue.setActionCommand("ADD_blue");
-        pTiles.add(bBlue);
+        bWall2 = new JButton("Wall 2", GImages.getImageIcon(GImages.WALL_2));
+        bWall2.setFont(new Font("Arial", Font.BOLD, 32));
+        bWall2.setBackground(Color.WHITE);
+        bWall2.addActionListener(this);
+        bWall2.setActionCommand("ADD_" + GImages.WALL_2);
+        pTiles.add(bWall2);
         /* End tiles */
 
         /* Entities - collision-tested objects */
         pEntities.setLayout(new FlowLayout());
 
-        bPlayer = new JButton("Player");
+        bPlayer = new JButton("Player", GImages.getImageIcon(GImages.PLAYER));
         bPlayer.setFont(new Font("Arial", Font.BOLD, 32));
         bPlayer.setForeground(Color.RED);
         bPlayer.setBackground(Color.WHITE);
+        bPlayer.addActionListener(this);
+        bPlayer.setActionCommand("SET_" + GImages.PLAYER);
         pEntities.add(bPlayer);
 
-        bPortalBlue = new JButton("Blue Portal", MyImages.get("portal_blue"));
+        bPortalBlue = new JButton("Blue Portal", GImages.getImageIcon(GImages.PORTAL_BLUE));
         bPortalBlue.setFont(new Font("Arial", Font.BOLD, 32));
         bPortalBlue.setForeground(Color.RED);
         bPortalBlue.setBackground(Color.WHITE);
         bPortalBlue.addActionListener(this);
-        bPortalBlue.setActionCommand("SET_portal_blue");
+        bPortalBlue.setActionCommand("SET_" + GImages.PORTAL_BLUE);
         pEntities.add(bPortalBlue);
 
-        bPortalOrange = new JButton("Orange Portal", MyImages.get("portal_orange"));
+        bPortalOrange = new JButton("Orange Portal", GImages.getImageIcon(GImages.PORTAL_ORANGE));
         bPortalOrange.setFont(new Font("Arial", Font.BOLD, 32));
         bPortalOrange.setForeground(Color.RED);
         bPortalOrange.setBackground(Color.WHITE);
         bPortalOrange.addActionListener(this);
-        bPortalOrange.setActionCommand("SET_portal_orange");
+        bPortalOrange.setActionCommand("SET_" + GImages.PORTAL_ORANGE);
         pEntities.add(bPortalOrange);
 
-        bCoin = new JButton("Coin", MyImages.get("coin"));
+        bCoin = new JButton("Coin", GImages.getImageIcon(GImages.COIN));
         bCoin.setFont(new Font("Arial", Font.BOLD, 32));
         bCoin.setBackground(Color.WHITE);
         bCoin.addActionListener(this);
-        bCoin.setActionCommand("ADD_coin");
+        bCoin.setActionCommand("ADD_" + GImages.COIN);
         pEntities.add(bCoin);
         /* End entities */
 
@@ -150,7 +152,7 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
 
         /* Buttons */
         pButtons.setLayout(new BoxLayout(pButtons, BoxLayout.PAGE_AXIS));
-        pButtons.setPreferredSize(new Dimension(500, 700));
+        pButtons.setPreferredSize(new Dimension(450, 700));
         pButtons.add(Box.createVerticalGlue());
         pButtons.add(pTiles);
         pButtons.add(Box.createVerticalGlue());
@@ -164,6 +166,10 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
         cont.setLayout(new BorderLayout());
         cont.add(pGridWrapper, BorderLayout.CENTER);
         cont.add(pButtons, BorderLayout.EAST);
+
+        // Set window options
+        setMinimumSize(new Dimension(1200, 730));
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     @Override
@@ -174,7 +180,7 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
 
         // ADD commands (wall tiles, common entities)
         else if (e.getActionCommand().contains("ADD")) {
-            iconToSet = MyImages.get(e.getActionCommand().substring(4));
+            iconToSet = GImages.getImageIcon(e.getActionCommand().substring(4));
             uniqueID = NO_ID;
         }
 
@@ -182,20 +188,20 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
         else if (e.getActionCommand().contains("SET")) {
             String com = e.getActionCommand().substring(4);
 
-            iconToSet = MyImages.get(com);
+            iconToSet = GImages.getImageIcon(com);
 
             // Set unique ID given command
             switch (com) {
-                case "player":
+                case GImages.PLAYER:
                     uniqueID = PLAYER;
                     break;
-                case "exit":
+                case GImages.EXIT:
                     uniqueID = EXIT;
                     break;
-                case "portal_blue":
+                case GImages.PORTAL_BLUE:
                     uniqueID = PORTAL_BLUE;
                     break;
-                case "portal_orange":
+                case GImages.PORTAL_ORANGE:
                     uniqueID = PORTAL_ORANGE;
                     break;
             }
@@ -204,7 +210,7 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
         // CLEAR command: clear grid, reset icon
         else if (e.getActionCommand().equals("CLEAR")) {
             clearGrid();
-            iconToSet = MyImages.get("white");
+            iconToSet = GImages.getImageIcon(GImages.WHITE);
         }
     }
 
@@ -260,7 +266,7 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
             source.setIcon(iconToSet);
 
             if (uniqueID != NO_ID) {
-                uniques[uniqueID].setIcon(MyImages.get("white"));
+                uniques[uniqueID].setIcon(GImages.getImageIcon(GImages.WHITE));
                 uniques[uniqueID].setBackground(Color.WHITE);
                 uniques[uniqueID] = source;
             }
@@ -273,7 +279,7 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
      * @param i index of the button
      */
     private void clearGridButton(int i) {
-        grid.get(i).setIcon(MyImages.get("white"));
+        grid.get(i).setIcon(GImages.getImageIcon("white"));
         grid.get(i).setBackground(Color.WHITE);
 
         for (int u = 0; u < uniques.length; u++) {
@@ -302,12 +308,9 @@ public class MapBuilder extends JFrame implements ActionListener, MouseListener,
     }
 
     public static void main(String[] args) {
-        MyImages.load();
+        GImages.load();
 
         MapBuilder frame = new MapBuilder("Map Builder");
-
-        frame.setSize(1200, 730);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 }
