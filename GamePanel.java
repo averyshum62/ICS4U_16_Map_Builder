@@ -1,6 +1,7 @@
-package Play;
+package play;
 
-import Game.Map;
+import game.GameMap;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,14 +9,14 @@ import java.io.*;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 
-    private Map map;
+    private GameMap map;
 
     public GamePanel() {
-        map = new Map();
+        map = new GameMap();
         this.setPreferredSize(new Dimension(640, 640));
     }
 
-    public void setMap(Map map) {
+    public void setMap(GameMap map) {
         this.map = map;
         repaint();
         setFocusable(true);
@@ -35,7 +36,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             try {
                 if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                     ObjectInputStream in = new ObjectInputStream(new FileInputStream(fc.getSelectedFile()));
-                    Map load = (Map) in.readObject();
+                    GameMap load = (GameMap) in.readObject();
                     this.setMap(load);
                     in.close();
                 }

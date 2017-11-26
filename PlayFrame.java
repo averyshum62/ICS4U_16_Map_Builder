@@ -1,6 +1,6 @@
-package Play;
+package play;
 
-import Game.*;
+import game.*;
 import javax.swing.*;
 import java.awt.*;
 
