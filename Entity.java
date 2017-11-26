@@ -1,15 +1,15 @@
-package Game;
+package game;
 
 import java.awt.*;
 
 public class Entity extends Rectangle {
 
-    private int imgKey;
+    private int key;
     private boolean up, left, right, down;
 
     public Entity(int x, int y, int imgKey) {
         super(x, y, 32, 32);
-        this.imgKey = imgKey;
+        this.key = imgKey;
     }
 
     public void moveUp(boolean up) {
@@ -34,6 +34,6 @@ public class Entity extends Rectangle {
         if (right) x += 2;
         if (down) y += 2;
 
-        g.drawImage(Images.getBufferedImage(imgKey), x, y, 32, 32, null, null);
+        g.drawImage(Images.getBufferedImage(key), x, y, 32, 32, null, null);
     }
 }

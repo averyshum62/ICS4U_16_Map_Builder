@@ -1,7 +1,8 @@
-package Game;
+package game;
 
 public class Constants {
     public static final int
+            NIL = -1,
             BACKGROUND = 0,
             WALL_1 = 1,
             WALL_2 = 2,
